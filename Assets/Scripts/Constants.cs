@@ -12,6 +12,6 @@ public static class Constants
     public const float ShipAccelerationRate = 0.015f;
     public const float RotationSpeed = 100f;
 
-    public const float BulletDelay = 0.5f;
-    public const float BulletSpeed = 4f;
+    public const float BulletDelay = 0.4f;
+    public const float BulletSpeed = 6.5f;
 }
