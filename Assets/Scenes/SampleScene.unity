@@ -598,6 +598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 1952432203}
+  _levelCollider: {fileID: 1763831564}
 --- !u!114 &1968466908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -610,7 +611,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32549ad46f1834747a58acff0d9ecce3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelCollider: {fileID: 1763831564}
   _enemyTypes:
   - {fileID: 2311072615509133971, guid: 1ff4adfee0bd31e418b155817d58b8ef, type: 3}
   - {fileID: 841965118231701408, guid: ed2a212f339fc834f96c69a1e339a5ef, type: 3}

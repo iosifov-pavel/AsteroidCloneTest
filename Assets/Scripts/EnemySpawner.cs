@@ -5,8 +5,6 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
-    private Collider2D _levelCollider;
-    [SerializeField]
     private List<Enemy> _enemyTypes;
     [SerializeField]
     private Transform _enemiesHolder;
@@ -18,6 +16,18 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    public List<Enemy> SpawnEnemy(Enemy enemy, int count = 1)
+    {
+        var spawnedEnemies = new List<Enemy>();
+        for(var i = 0; i < count;i++)
+        {
+            var newEnemy = Instantiate<Enemy>(enemy, _enemiesHolder);
+            newEnemy.Initialize(CalculateSpawnPosition(GameController.Instance.LevelBounds));
+            spawnedEnemies.Add(newEnemy);
+        }
+        return spawnedEnemies;
+    }
+
     private IEnumerator SpawnEnemy(Enemy enemy)
     {
         var timer = 0f;
@@ -26,27 +36,26 @@ public class EnemySpawner : MonoBehaviour
             timer += Time.deltaTime;
             if (timer >= enemy.SpawnTime)
             {
-                var newEnemy = Instantiate<Enemy>(enemy, _enemiesHolder);
-                newEnemy.Initialize(CalculateSpawnPosition());
+                SpawnEnemy(enemy);
                 timer = 0;
             }
             yield return null;
         }
     }
 
-    private Vector2 CalculateSpawnPosition()
+    private Vector2 CalculateSpawnPosition(BoxCollider2D collider)
     {
         var horizontalSide = Random.Range(0f, 1f) > 0.5;
         var positiveSide = Random.Range(0f, 1f) > 0.5;
-        var posX = Random.Range(-_levelCollider.bounds.extents.x, _levelCollider.bounds.extents.x);
-        var posY = Random.Range(-_levelCollider.bounds.extents.y, _levelCollider.bounds.extents.y);
+        var posX = Random.Range(-collider.bounds.extents.x, collider.bounds.extents.x);
+        var posY = Random.Range(-collider.bounds.extents.y, collider.bounds.extents.y);
         if (horizontalSide)
         {
-            posY = positiveSide ? _levelCollider.bounds.extents.y : -_levelCollider.bounds.extents.y;
+            posY = positiveSide ? collider.bounds.extents.y : -collider.bounds.extents.y;
         }
         if (!horizontalSide)
         {
-            posX = positiveSide ? _levelCollider.bounds.extents.x : -_levelCollider.bounds.extents.x;
+            posX = positiveSide ? collider.bounds.extents.x : -collider.bounds.extents.x;
         }
         return new Vector2(posX, posY);
     }

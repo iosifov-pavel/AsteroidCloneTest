@@ -55,30 +55,6 @@ public class AlienShip : Enemy
         
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision == null)
-        {
-            return;
-        }
-        if(IsInLayerMask(collision.gameObject,_player))
-        {
-            collision.gameObject.SetActive(false);
-            EliminatePlayer();
-        }
-        if (IsInLayerMask(collision.gameObject, _bullet))
-        {
-            collision.gameObject.SetActive(false);
-            SelfDestroy();
-        }
-
-    }
-
-    private bool IsInLayerMask(GameObject obj, LayerMask mask)
-    {
-        return ((mask.value & (1 << obj.layer)) > 0);
-    }
-
     public override void SelfDestroy()
     {
         gameObject.SetActive(false);
