@@ -599,6 +599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 1952432203}
   _levelCollider: {fileID: 1763831564}
+  _enemySpawner: {fileID: 1968466908}
 --- !u!114 &1968466908
 MonoBehaviour:
   m_ObjectHideFlags: 0

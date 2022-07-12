@@ -16,13 +16,13 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    public List<Enemy> SpawnEnemy(Enemy enemy, int count = 1)
+    public List<Enemy> SpawnEnemy(Enemy enemy, Vector2 spawnPosition, int count = 1)
     {
         var spawnedEnemies = new List<Enemy>();
         for(var i = 0; i < count;i++)
         {
             var newEnemy = Instantiate<Enemy>(enemy, _enemiesHolder);
-            newEnemy.Initialize(CalculateSpawnPosition(GameController.Instance.LevelBounds));
+            newEnemy.Initialize(spawnPosition);
             spawnedEnemies.Add(newEnemy);
         }
         return spawnedEnemies;
@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
             timer += Time.deltaTime;
             if (timer >= enemy.SpawnTime)
             {
-                SpawnEnemy(enemy);
+                SpawnEnemy(enemy, CalculateSpawnPosition(GameController.Instance.LevelBounds));
                 timer = 0;
             }
             yield return null;

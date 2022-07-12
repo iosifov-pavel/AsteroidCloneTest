@@ -34,6 +34,10 @@ public class Asteroid : Enemy
         var playerPosition = GameController.Instance.PlayerPosition;
         return (playerPosition - spawnPosition).normalized;
     }
+    public void OverrideFlyDirection(Vector2 newDirection)
+    {
+        _flyDirection = newDirection;
+    }
     public override void Move()
     {
         var resultSpeed = _speed * ( _asteroidSize == AsteroidSize.Big ? 1 : 1.5f );
@@ -46,19 +50,21 @@ public class Asteroid : Enemy
 
     public override void SelfDestroy()
     {
-        if(_asteroidSize == AsteroidSize.Small)
-        {
-            gameObject.SetActive(false);
-        }
-        else
+        if(_asteroidSize == AsteroidSize.Big)
         {
             Disassemble();
         }
+        gameObject.SetActive(false);
     }
 
     private void Disassemble()
     {
-        GameController.Instance.Spawner.SpawnEnemy(this, 2);
+        var parts = GameController.Instance.Spawner.SpawnEnemy(this, transform.position, 2);
+        foreach(var part in parts)
+        {
+            var asteroidPart = part as Asteroid;
+            asteroidPart.SetSizeParametrs(AsteroidSize.Small);
+        }
     }
 }
 
