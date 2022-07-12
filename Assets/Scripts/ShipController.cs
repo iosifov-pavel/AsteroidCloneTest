@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(ShipMovement))]
-[RequireComponent(typeof(ShipFiringSystem))]
 public class ShipController : MonoBehaviour
 {
     [SerializeField]
@@ -21,14 +20,6 @@ public class ShipController : MonoBehaviour
     }
     public void Init()
     {
-        if (_shipMovement == null)
-        {
-            _shipMovement = GetComponent<ShipMovement>();
-        }
-        if (_shipFiringSystem == null)
-        {
-            _shipFiringSystem = GetComponent<ShipFiringSystem>();
-        }
         _input = new ShipControl();
         _input.Enable();
         SetControls();

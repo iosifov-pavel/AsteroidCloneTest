@@ -4,10 +4,12 @@ using UnityEngine;
 
 public static class Constants
 {
-    public const int PlayerHealth = 5;
     public const int PlayerBullets = 50;
     public const int PlayerLazers = 10;
 
     public const float ShipSpeed = 3f;
-    public const float RotationSpeed = 50f;
+    public const float RotationSpeed = 100f;
+
+    public const float BulletDelay = 0.5f;
+    public const float BulletSpeed = 4f;
 }
