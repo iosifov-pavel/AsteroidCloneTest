@@ -9,6 +9,7 @@ public class ShipMovement : MonoBehaviour
     private bool _isMoving;
 
     private float _rotationDirection;
+    private float _currentSpeed;
 
     public void RotateShip(InputAction.CallbackContext context)
     {
@@ -28,11 +29,16 @@ public class ShipMovement : MonoBehaviour
             var rotation = -_rotationDirection * Time.deltaTime * Constants.RotationSpeed;
             transform.Rotate(new Vector3(0, 0, rotation));
         }
-        if (_isMoving)
-        {
-            var move = Vector2.up * Time.deltaTime * Constants.ShipSpeed;
-            transform.Translate(move);
-        }
+        CalculateSpeed();
+        var move = Vector2.up * Time.deltaTime * _currentSpeed;
+        transform.Translate(move);
+    }
+
+    private void CalculateSpeed()
+    {
+        var accelerationChange = _isMoving ? Constants.ShipAccelerationRate : Constants.ShipInertiaRate;
+        _currentSpeed += accelerationChange;
+        _currentSpeed = Mathf.Clamp(_currentSpeed, 0, Constants.ShipMaxSpeed);
     }
 
 
