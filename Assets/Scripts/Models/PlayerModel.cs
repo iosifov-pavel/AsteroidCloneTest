@@ -31,11 +31,17 @@ public class PlayerModel : BaseModel
     }
 
     public bool CanShootLazer => _laserCount > 0;
+    public bool IsLaserMaxCapacity => _laserCount == Utils.Constants.PlayerMaxLazers;
 
     public void ShootLaser()
     {
         _laserCount--;
         OnShootLaser?.Invoke();
+    }
+
+    public void RestoreLaser()
+    {
+        _laserCount++;
     }
 
     public UnityEvent OnShootLaser = new UnityEvent();

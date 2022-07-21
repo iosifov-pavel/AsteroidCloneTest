@@ -10,6 +10,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     private bool _isMoving;
     private bool _isFiring;
     private float _rechargeTimer;
+    private float _laserCooldownTimer;
     private float _rotationDirection;
     private bool _isDead;
 
@@ -106,6 +107,16 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
                 ShootBullet(_bulletInitialPosition);
                 _rechargeTimer = Utils.Constants.BulletDelay;
             }
+        }
+        if(_model.IsLaserMaxCapacity)
+        {
+            return;
+        }
+        _laserCooldownTimer += timeStep;
+        if (_laserCooldownTimer >= Utils.Constants.PlayerLaserCooldown)
+        {
+            _model.RestoreLaser();
+            _laserCooldownTimer = 0;
         }
     }
     protected override void CheckEnterCollision(Collider2D collision, IPoolable poolable)
