@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2311072615509133970}
-  - component: {fileID: 2311072615509133971}
   - component: {fileID: 2140025529660377004}
+  - component: {fileID: 9212689935422802701}
   m_Layer: 0
   m_Name: Alien Ship
   m_TagString: Untagged
@@ -34,32 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2311072615509133971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2311072615509133973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff960b08202ce9e44affe5ac87194e4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player:
-    serializedVersion: 2
-    m_Bits: 8
-  _bullet:
-    serializedVersion: 2
-    m_Bits: 64
-  _screen:
-    serializedVersion: 2
-    m_Bits: 0
-  _laser:
-    serializedVersion: 2
-    m_Bits: 64
-  _spawnTime: 4
-  _speed: 3
 --- !u!50 &2140025529660377004
 Rigidbody2D:
   serializedVersion: 4
@@ -81,6 +55,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &9212689935422802701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2311072615509133973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0081b7ff76e8a3642ba955ae29cc8c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprite: {fileID: 2311072615960125041}
+  _body: {fileID: 2311072615960125040}
 --- !u!1 &2311072615960125043
 GameObject:
   m_ObjectHideFlags: 0

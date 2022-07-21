@@ -40,14 +40,7 @@ public static class ObjectPool
     private static T CreateNew<T>(T poolable, ObjectType type, Transform parent = null, Vector3 position = default, Quaternion rotation = default) where T : MonoBehaviour
     {
         T result;
-        if(parent != null)
-        {
-            result = GameObject.Instantiate<T>(poolable, parent);
-        }
-        else
-        {
-            result = GameObject.Instantiate<T>(poolable, position, rotation);
-        }
+        result = GameObject.Instantiate<T>(poolable, position, rotation, parent);
         var pool = result as IPoolable;
         _poolObjects[type].Add(pool);
         pool.Active = false;

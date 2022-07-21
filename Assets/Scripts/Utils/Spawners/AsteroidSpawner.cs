@@ -14,10 +14,9 @@ public class AsteroidSpawner : Spawner<AsteroidModel, AsteroidController>
     {
         var view = ObjectPool.GetObject(_view, _data.Type, parent);
         var spawnPosition = CalculateSpawnPosition(ApplicationController.Instance.LevelBounds);
-        var direction = CalculateDirectionToPlayer(spawnPosition);
+        var direction = Utils.CalculateDirectionToPlayer(spawnPosition);
         var model = new AsteroidModel(_data, spawnPosition, direction);
         view.Setup(model);
-        view.Active = true;
         ApplicationController.Instance.GameObjects.Add(view.Controller);
     }
 }

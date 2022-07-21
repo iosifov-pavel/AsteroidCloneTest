@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AlienShipController : MonoBehaviour
+public class AlienShipController : BaseController<AlienShipModel>
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Update(float timeStep)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        _model.Base.MovementVector = Utils.CalculateDirectionToPlayer(_model.Base.Position);
+        _model.Base.Position += _model.Base.MovementVector * timeStep * _model.Data.Speed;
     }
 }

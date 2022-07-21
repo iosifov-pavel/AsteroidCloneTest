@@ -575,6 +575,7 @@ MonoBehaviour:
   _playerView: {fileID: 8317710890566046848, guid: 85673da955b76ed429089c3f2a02e2dc, type: 3}
   _bulletView: {fileID: 2537876607699202640, guid: ec299443b321afc46a93c22b59ddc9dd, type: 3}
   _asteroidView: {fileID: 3124446046315439280, guid: ed2a212f339fc834f96c69a1e339a5ef, type: 3}
+  _alienShipView: {fileID: 9212689935422802701, guid: 1ff4adfee0bd31e418b155817d58b8ef, type: 3}
   _presets:
   - {fileID: 11400000, guid: e669b5fcfe606a54ab0f92bed1726eb9, type: 2}
   - {fileID: 11400000, guid: 4ddd52d9a9ead7d408e866b01cff3b67, type: 2}

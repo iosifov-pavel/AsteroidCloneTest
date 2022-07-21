@@ -23,14 +23,13 @@ public class BaseView<M, C> : MonoBehaviour, IPoolable where M : BaseModel where
         }
 	}
 
-    protected bool ReadyToUse => _controller != null;
-
 	public virtual void Setup(M model)
 	{
 		_model = model;
 		_controller = new C();
 		_controller.Setup(_model);
 		SetCallbacks();
+		Active = true;
 	}
 
 	protected virtual void SetCallbacks()

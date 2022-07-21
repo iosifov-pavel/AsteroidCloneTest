@@ -23,6 +23,7 @@ public class BaseObjectInfo
         set
         {
             _movementVector = value;
+            OnMovementChange?.Invoke(_movementVector);
         }
     }
 
@@ -38,4 +39,5 @@ public class BaseObjectInfo
     }
 
     public UnityEvent<Vector2> OnPositionChange = new UnityEvent<Vector2>();
+    public UnityEvent<Vector2> OnMovementChange = new UnityEvent<Vector2>();
 }

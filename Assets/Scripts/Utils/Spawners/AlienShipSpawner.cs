@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AlienShipSpawner : MonoBehaviour
+public class AlienShipSpawner : Spawner<AlienShipModel, AlienShipController>
 {
-    // Start is called before the first frame update
-    void Start()
+    BaseView<AlienShipModel, AlienShipController> _view;
+    public override void SetSpawnObject(BaseView<AlienShipModel, AlienShipController> view)
     {
-        
+        _view = view;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Spawn(Transform parent)
     {
-        
+        var view = ObjectPool.GetObject(_view, _data.Type, parent);
+        var spawnPosition = CalculateSpawnPosition(ApplicationController.Instance.LevelBounds);
+        var direction = Utils.CalculateDirectionToPlayer(spawnPosition);
+        var model = new AlienShipModel(_data, spawnPosition);
+        view.Setup(model);
+        ApplicationController.Instance.GameObjects.Add(view.Controller);
     }
 }

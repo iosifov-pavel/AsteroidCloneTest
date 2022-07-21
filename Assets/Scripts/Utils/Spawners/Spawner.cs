@@ -35,10 +35,4 @@ public abstract class Spawner<M,C> : ISpawner where M : BaseModel where C : Base
         }
         return new Vector2(posX, posY);
     }
-
-    protected Vector2 CalculateDirectionToPlayer(Vector2 position)
-    {
-        var playerPosition = ApplicationController.Instance.Player.Model.Base.Position;
-        return (playerPosition - position).normalized;
-    }
 }

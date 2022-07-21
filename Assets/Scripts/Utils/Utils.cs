@@ -26,4 +26,11 @@ public static class Utils
         public const float AlienRotateTime = 0.5f;
         public const float AlienRotateTimeRandomModifier = 0.2f;
     }
+
+
+    public static Vector2 CalculateDirectionToPlayer(Vector2 position)
+    {
+        var playerPosition = ApplicationController.Instance.Player.Model.Base.Position;
+        return (playerPosition - position).normalized;
+    }
 }
