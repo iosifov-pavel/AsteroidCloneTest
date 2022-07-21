@@ -14,7 +14,7 @@ public class BaseView<M, C> : MonoBehaviour, IPoolable where M : BaseModel where
 
 	public C Controller => _controller;
 
-    public bool Active 
+    public virtual bool Active 
 	{ 
 		get => gameObject.activeSelf;
 		set

@@ -20,8 +20,12 @@ public static class Utils
         public const float AsteroidBigSize = 0.3f;
         public const float AsteroidSmallSize = 0.2f;
         public const float AsteroidSmallSpeedScale = 1.25f;
-        public const float AsteroidChildsRotationRange = 30f;
+        public const float AsteroidChildsRotationRange = 45f;
         public const int AsteroidChildCount = 2;
+
+        public const float LaserMaxWidth = 0.1f;
+        public const float LaserMaxLength = 4f;
+        public const float LaserAnimationTime = 0.5f;
     }
 
 

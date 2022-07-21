@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   _sprite: {fileID: 21300000, guid: 8d3307dd46cdfea468908ee3008f69d5, type: 3}
-  _speed: 5
+  _speed: 5.5
   _type: 3
   _spawnFrequency: 0

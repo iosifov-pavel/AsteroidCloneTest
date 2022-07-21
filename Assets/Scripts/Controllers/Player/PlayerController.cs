@@ -49,7 +49,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
         _input.Ship.Rotate.performed += (c) => CheckRotateButton(c);
         _input.Ship.MoveForward.performed += (c) => CheckMoveButton(c);
         _input.Ship.Fire.performed += (c) => CheckShootButtonBullet(c);
-        _input.Ship.Laser.performed += (_) => ShootLaser();
+        _input.Ship.Laser.performed += (_) => CheckLaserButton();
         _input.Enable();
     }
     public void CheckRotateButton(InputAction.CallbackContext context)
@@ -69,13 +69,22 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
             _rechargeTimer = 0;
         }
     }
-    public void ShootLaser()
+    public void CheckLaserButton()
     {
         if (_isDead)
         {
             return;
         }
-        Debug.Log("piu");
+        if(!_model.CanShootLazer)
+        {
+            return;
+        }
+        ShootLaser();
+    }
+
+    private void ShootLaser()
+    {
+        _model.ShootLaser();
     }
 
     public override void Update(float timeStep)
