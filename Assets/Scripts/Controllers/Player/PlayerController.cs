@@ -112,7 +112,16 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     {
         if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Screen))
         {
-
+            var Xdiff = ApplicationController.Instance.LevelBounds.bounds.extents.x - Mathf.Abs(_model.Base.Position.x);
+            var Ydiff = ApplicationController.Instance.LevelBounds.bounds.extents.y - Mathf.Abs(_model.Base.Position.y);
+            if( Xdiff >= Ydiff )
+            {
+                _model.Base.Position = new Vector2(_model.Base.Position.x, -_model.Base.Position.y);
+            }
+            else
+            {
+                _model.Base.Position = new Vector2(-_model.Base.Position.x, _model.Base.Position.y);
+            }
         }
     }
 }
