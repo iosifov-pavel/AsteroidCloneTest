@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2311072615509133970}
   - component: {fileID: 2140025529660377004}
   - component: {fileID: 9212689935422802701}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Alien Ship
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 2311072615960125040}
   - component: {fileID: 2311072615960125041}
   - component: {fileID: 5735180655369867228}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.31}

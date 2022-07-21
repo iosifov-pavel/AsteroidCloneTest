@@ -18,4 +18,20 @@ public abstract class BaseController<M> : IFlyForward, IUpdateable where M : Bas
     }
 
     public abstract void Update(float timeStep);
+
+    public void ProceedCollision(Collider2D collision, IPoolable poolable, bool isEnter)
+    {
+        if (isEnter)
+        {
+            CheckEnterCollision(collision, poolable);
+        }
+        else
+        {
+            CheckExitCollision(collision, poolable);
+        }
+    }
+
+    protected abstract void CheckEnterCollision(Collider2D collision, IPoolable poolable);
+
+    protected abstract void CheckExitCollision(Collider2D collision, IPoolable poolable);
 }

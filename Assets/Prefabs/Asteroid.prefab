@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 841965117456066650}
   - component: {fileID: 841965117456066649}
   - component: {fileID: 4969202448790879222}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 841965118231701409}
   - component: {fileID: 7155476559480963531}
   - component: {fileID: 3124446046315439280}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Asteroid
   m_TagString: Untagged
   m_Icon: {fileID: 0}

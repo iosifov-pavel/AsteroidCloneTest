@@ -90,4 +90,23 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
             }
         }
     }
+    protected override void CheckEnterCollision(Collider2D collision, IPoolable poolable)
+    {
+        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Bullet))
+        {
+            ObjectPool.ReturnToPool(poolable);
+        }
+        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Laser))
+        {
+            ObjectPool.ReturnToPool(poolable);
+        }
+    }
+
+    protected override void CheckExitCollision(Collider2D collision, IPoolable poolable)
+    {
+        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Screen))
+        {
+            ObjectPool.ReturnToPool(poolable);
+        }
+    }
 }

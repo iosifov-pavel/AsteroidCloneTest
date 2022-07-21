@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AlienShip
   m_EditorClassIdentifier: 
   _sprite: {fileID: 0}
-  _speed: 3.5
+  _speed: 3
   _type: 1
   _spawnFrequency: 3

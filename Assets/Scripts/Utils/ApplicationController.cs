@@ -20,12 +20,11 @@ public class ApplicationController : MonoBehaviour
     [SerializeField]
     private BoxCollider2D _levelCollider;
     [SerializeField]
-    private Transform _enemiesHolder;
-    [SerializeField]
     private Transform _poolHolder;
     [SerializeField]
-    private Transform _bulletHolder;
+    private Masks _masks;
     public BoxCollider2D LevelBounds => _levelCollider;
+    public Masks Masks => _masks;
     public PlayerController Player { get; set; }
     public List<IUpdateable> GameObjects;
     private List<IUpdateable> _objectsQueue;
@@ -78,7 +77,7 @@ public class ApplicationController : MonoBehaviour
     public void SpawnBullet(Transform bulletOrigin)
     {
         var bulletData = _presets.First(p => p.Type == ObjectType.Bullet);
-        var bulletView = ObjectPool.GetObject(_bulletView, bulletData.Type, _bulletHolder, position: bulletOrigin.position, rotation: bulletOrigin.rotation);
+        var bulletView = ObjectPool.GetObject(_bulletView, bulletData.Type, position: bulletOrigin.position, rotation: bulletOrigin.rotation);
         var bulletModel = new BulletModel(bulletData, bulletView.transform.position, bulletView.transform.up);
         bulletView.Setup(bulletModel);
         _objectsQueue.Add(bulletView.Controller);
@@ -92,7 +91,7 @@ public class ApplicationController : MonoBehaviour
             timer += Time.deltaTime;
             if( spawner.CanSpawn(timer))
             {
-                spawner.Spawn(_enemiesHolder);
+                spawner.Spawn();
                 timer = 0;
             }
             yield return null;
@@ -111,4 +110,20 @@ public class ApplicationController : MonoBehaviour
             _objectsQueue.Clear();
         }
     }
+}
+
+
+[System.Serializable]
+public struct Masks
+{
+    [SerializeField]
+    public LayerMask Player;
+    [SerializeField]
+    public LayerMask Bullet;
+    [SerializeField]
+    public LayerMask Screen;
+    [SerializeField]
+    public LayerMask Laser;
+    [SerializeField]
+    public LayerMask Enemy;
 }

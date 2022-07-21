@@ -17,7 +17,7 @@ public abstract class Spawner<M,C> : ISpawner where M : BaseModel where C : Base
 
     public abstract void SetSpawnObject(BaseView<M,C> view);
 
-    public abstract void Spawn(Transform parent);
+    public abstract void Spawn();
 
     protected Vector2 CalculateSpawnPosition(BoxCollider2D collider)
     {

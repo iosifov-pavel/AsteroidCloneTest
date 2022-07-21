@@ -14,4 +14,14 @@ public class BulletView : BaseView<BulletModel, BulletController>
     {
         transform.position = newPosition;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        _controller.ProceedCollision(collision, this, true);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        _controller.ProceedCollision(collision, this, false);
+    }
 }
