@@ -35,5 +35,15 @@ public class BaseView<M, C> : MonoBehaviour, IPoolable where M : BaseModel where
 	protected virtual void SetCallbacks()
     {
 
-    }
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		_controller.ProceedCollision(collision, this, true);
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		_controller.ProceedCollision(collision, this, false);
+	}
 }

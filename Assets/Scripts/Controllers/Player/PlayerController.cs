@@ -11,6 +11,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     private bool _isFiring;
     private float _rechargeTimer;
     private float _rotationDirection;
+    private bool _isDead;
 
     private Transform _bulletInitialPosition;
 
@@ -70,11 +71,19 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     }
     public void ShootLaser()
     {
+        if (_isDead)
+        {
+            return;
+        }
         Debug.Log("piu");
     }
 
     public override void Update(float timeStep)
     {
+        if(_isDead)
+        {
+            return;
+        }
         _rechargeTimer -= timeStep;
         if (_isRotating)
         {
@@ -92,12 +101,9 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     }
     protected override void CheckEnterCollision(Collider2D collision, IPoolable poolable)
     {
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Bullet))
+        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Enemy))
         {
-            ObjectPool.ReturnToPool(poolable);
-        }
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Laser))
-        {
+            _isDead = true;
             ObjectPool.ReturnToPool(poolable);
         }
     }
