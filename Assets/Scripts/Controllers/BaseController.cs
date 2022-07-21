@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseController<M> : IFlyForward where M : BaseModel
+public abstract class BaseController<M> : IFlyForward, IUpdateable where M : BaseModel
 {
     protected M _model;
     public M Model { get => _model; set => _model = value; }
@@ -16,4 +16,6 @@ public class BaseController<M> : IFlyForward where M : BaseModel
     {
         _model = model;
     }
+
+    public abstract void Update(float timeStep);
 }

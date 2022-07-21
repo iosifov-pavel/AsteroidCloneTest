@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseView<M, C> : MonoBehaviour where M : BaseModel where C : BaseController<M>, new()
+public class BaseView<M, C> : MonoBehaviour, IPoolable where M : BaseModel where C : BaseController<M>, new()
 {
 	[SerializeField]
 	protected SpriteRenderer _sprite;
@@ -11,7 +11,19 @@ public class BaseView<M, C> : MonoBehaviour where M : BaseModel where C : BaseCo
 
 	protected M _model;
 	protected C _controller;
-	protected bool ReadyToUse => _controller != null;
+
+	public C Controller => _controller;
+
+    public bool Active 
+	{ 
+		get => gameObject.activeSelf;
+		set
+        {
+			gameObject.SetActive(value);
+        }
+	}
+
+    protected bool ReadyToUse => _controller != null;
 
 	public virtual void Setup(M model)
 	{

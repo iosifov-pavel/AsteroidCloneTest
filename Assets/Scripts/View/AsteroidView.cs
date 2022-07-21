@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AsteroidView : BaseView<AsteroidModel,AsteroidController>
 {
-
     protected override void SetCallbacks()
     {
         base.SetCallbacks();
@@ -14,14 +13,5 @@ public class AsteroidView : BaseView<AsteroidModel,AsteroidController>
     private void ChangePosition(Vector2 newPosition)
     {
         transform.position = newPosition;
-    }
-
-    private void Update()
-    {
-        if (!ReadyToUse)
-        {
-            return;
-        }
-        _controller.FlyForward(Time.deltaTime);
     }
 }

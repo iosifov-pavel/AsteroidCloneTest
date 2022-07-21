@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BulletView : BaseView<BulletModel, BulletController>
 {
-
     protected override void SetCallbacks()
     {
         base.SetCallbacks();
@@ -14,14 +13,5 @@ public class BulletView : BaseView<BulletModel, BulletController>
     private void ChangePosition(Vector2 newPosition)
     {
         transform.position = newPosition;
-    }
-
-    private void Update()
-    {
-        if(!ReadyToUse)
-        {
-            return;
-        }
-        _controller.FlyForward(Time.deltaTime);
     }
 }

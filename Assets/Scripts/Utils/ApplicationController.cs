@@ -19,14 +19,21 @@ public class ApplicationController : MonoBehaviour
     private BoxCollider2D _levelCollider;
     [SerializeField]
     private Transform _enemiesHolder;
+    [SerializeField]
+    private Transform _poolHolder;
     public BoxCollider2D LevelBounds => _levelCollider;
     public PlayerController Player { get; set; }
+    public List<IUpdateable> GameObjects;
+    private List<IUpdateable> _objectsQueue;
     private void Awake()
     {
+        GameObjects = new List<IUpdateable>();
+        _objectsQueue = new List<IUpdateable>();
         Instance = this;
     }
     void Start()
     {
+        ObjectPool.Setup(_poolHolder);
         SpawnPlayer();
         SetSpawnres();
     }
@@ -46,14 +53,17 @@ public class ApplicationController : MonoBehaviour
         var playerView = Instantiate(_playerView);
         var playerModel = new PlayerModel(playerData, Vector2.zero);
         playerView.Setup(playerModel);
+        GameObjects.Add(playerView.Controller);
     }
 
     public void SpawnBullet(Transform bulletOrigin)
     {
         var bulletData = _presets.First(p => p.Type == ObjectType.Bullet);
-        var bulletView = Instantiate(_bulletView, bulletOrigin.position, bulletOrigin.rotation);
+        var bulletView = ObjectPool.GetObject(_bulletView, bulletData.Type, position: bulletOrigin.position, rotation: bulletOrigin.rotation);
         var bulletModel = new BulletModel(bulletData, bulletView.transform.position, bulletView.transform.up);
         bulletView.Setup(bulletModel);
+        bulletView.Active = true;
+        _objectsQueue.Add(bulletView.Controller);
     }
 
     private IEnumerator CheckSpawners(ISpawner spawner)
@@ -68,6 +78,19 @@ public class ApplicationController : MonoBehaviour
                 timer = 0;
             }
             yield return null;
+        }
+    }
+
+    private void Update()
+    {
+        foreach(var upd in GameObjects)
+        {
+            upd.Update(Time.deltaTime);
+        }
+        if(_objectsQueue.Count > 0)
+        {
+            GameObjects.AddRange(_objectsQueue);
+            _objectsQueue.Clear();
         }
     }
 }

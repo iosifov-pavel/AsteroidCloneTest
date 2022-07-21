@@ -1,9 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : BaseController<PlayerModel>, IPlayerController
 {
+    private ShipControl _input;
+    private bool _isRotating;
+    private bool _isMoving;
+    private bool _isFiring;
+    private float _rechargeTimer;
+    private float _rotationDirection;
+
+    private Transform _bulletInitialPosition;
+
     public void MovePlayer(bool engineIsOn, float timeStep)
     {
         CalculateMovement(engineIsOn);
@@ -30,5 +40,54 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
             return;
         }
         _model.Base.MovementVector = Vector2.Lerp(_model.Base.MovementVector, _model.Forward, Utils.Constants.ShipRotateSensibility);
+    }
+    public void SetInput(Transform bulletInitialPosition)
+    {
+        _bulletInitialPosition = bulletInitialPosition;
+        _input = new ShipControl();
+        _input.Ship.Rotate.performed += (c) => CheckRotateButton(c);
+        _input.Ship.MoveForward.performed += (c) => CheckMoveButton(c);
+        _input.Ship.Fire.performed += (c) => CheckShootButtonBullet(c);
+        _input.Ship.Laser.performed += (_) => ShootLaser();
+        _input.Enable();
+    }
+    public void CheckRotateButton(InputAction.CallbackContext context)
+    {
+        _rotationDirection = context.ReadValue<float>();
+        _isRotating = _rotationDirection != 0;
+    }
+    public void CheckMoveButton(InputAction.CallbackContext context)
+    {
+        _isMoving = context.action.IsPressed();
+    }
+    public void CheckShootButtonBullet(InputAction.CallbackContext context)
+    {
+        _isFiring = context.action.IsPressed();
+        if (!_isFiring)
+        {
+            _rechargeTimer = 0;
+        }
+    }
+    public void ShootLaser()
+    {
+        Debug.Log("piu");
+    }
+
+    public override void Update(float timeStep)
+    {
+        _rechargeTimer -= timeStep;
+        if (_isRotating)
+        {
+            RotatePlayer(_rotationDirection, timeStep);
+        }
+        MovePlayer(_isMoving, timeStep);
+        if (_isFiring)
+        {
+            if (_rechargeTimer <= 0)
+            {
+                ShootBullet(_bulletInitialPosition);
+                _rechargeTimer = Utils.Constants.BulletDelay;
+            }
+        }
     }
 }
