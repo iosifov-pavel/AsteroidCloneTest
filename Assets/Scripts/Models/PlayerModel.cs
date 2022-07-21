@@ -26,7 +26,7 @@ public class PlayerModel : BaseModel
 
     public PlayerModel(ObjectData data, Vector2 position) : base(data, position)
     {
-        _laserCount = Utils.Constants.PlayerLazers;
+        _laserCount = Utils.Constants.PlayerMaxLazers;
         _forward = Vector2.up;
     }
 

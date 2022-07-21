@@ -7,9 +7,9 @@ public abstract class BaseController<M> : IFlyForward, IUpdateable where M : Bas
     protected M _model;
     public M Model { get => _model; set => _model = value; }
 
-    public void FlyForward(float deltaTime)
+    public void FlyForward(float deltaTime, float speedScale = 1)
     {
-        _model.Base.Position += _model.Base.MovementVector * deltaTime * _model.Data.Speed;
+        _model.Base.Position += _model.Base.MovementVector * deltaTime * _model.Data.Speed * speedScale;
     }
 
     public virtual void Setup(M model)

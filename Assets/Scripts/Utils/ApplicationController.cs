@@ -25,9 +25,11 @@ public class ApplicationController : MonoBehaviour
     private Masks _masks;
     public BoxCollider2D LevelBounds => _levelCollider;
     public Masks Masks => _masks;
+    public AsteroidSpawner AsteroidSpawner => _asteroidSpawner;
     public PlayerController Player { get; set; }
     public List<IUpdateable> GameObjects;
     private List<IUpdateable> _objectsQueue;
+    private AsteroidSpawner _asteroidSpawner;
     private void Awake()
     {
         GameObjects = new List<IUpdateable>();
@@ -50,10 +52,10 @@ public class ApplicationController : MonoBehaviour
     private void SetAsteroidSpawner()
     {
         var asteroidData = _presets.First(p => p.Type == ObjectType.Asteroid);
-        var asteroidSpawner = new AsteroidSpawner();
-        asteroidSpawner.Setup(asteroidData);
-        asteroidSpawner.SetSpawnObject(_asteroidView);
-        StartCoroutine(CheckSpawners(asteroidSpawner));
+        _asteroidSpawner = new AsteroidSpawner();
+        _asteroidSpawner.Setup(asteroidData);
+        _asteroidSpawner.SetSpawnObject(_asteroidView);
+        StartCoroutine(CheckSpawners(_asteroidSpawner));
     }
 
     private void SetAlienShipSpawner()

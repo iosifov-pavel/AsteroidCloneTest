@@ -112,7 +112,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     {
         if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Screen))
         {
-            ObjectPool.ReturnToPool(poolable);
+
         }
     }
 }

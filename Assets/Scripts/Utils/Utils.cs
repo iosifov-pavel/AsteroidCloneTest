@@ -6,8 +6,7 @@ public static class Utils
 {
     public static class Constants
     {
-        public const int PlayerBullets = 50;
-        public const int PlayerLazers = 10;
+        public const int PlayerMaxLazers = 10;
 
         public const float ShipMaxSpeed = 5f;
         public const float ShipInertiaRate = -0.008f;
@@ -18,13 +17,11 @@ public static class Utils
         public const float BulletDelay = 0.4f;
         public const float BulletSpeed = 6.5f;
 
-        public const float AsteroidSpeedRange = 2f;
-        public const float AsteroidDefl = 60f;
-        public const int AsteroidDisassembleChildsCount = 2;
-
-        public const float AlienUpdatePlayerPositionTime = 0.75f;
-        public const float AlienRotateTime = 0.5f;
-        public const float AlienRotateTimeRandomModifier = 0.2f;
+        public const float AsteroidBigSize = 0.3f;
+        public const float AsteroidSmallSize = 0.2f;
+        public const float AsteroidSmallSpeedScale = 1.25f;
+        public const float AsteroidChildsRotationRange = 30f;
+        public const int AsteroidChildCount = 2;
     }
 
 
