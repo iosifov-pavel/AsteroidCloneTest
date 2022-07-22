@@ -9,10 +9,12 @@ public class AlienShipController : BaseController<AlienShipModel>
         if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Bullet))
         {
             ObjectPool.ReturnToPool(poolable);
+            ChangePlayerScore(_model.Data.Points);
         }
         if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Laser))
         {
             ObjectPool.ReturnToPool(poolable);
+            ChangePlayerScore(_model.Data.Points);
         }
     }
 

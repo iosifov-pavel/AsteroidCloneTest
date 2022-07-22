@@ -34,4 +34,10 @@ public abstract class BaseController<M> : IFlyForward, IUpdateable where M : Bas
     protected abstract void CheckEnterCollision(Collider2D collision, IPoolable poolable);
 
     protected abstract void CheckExitCollision(Collider2D collision, IPoolable poolable);
+
+
+    protected void ChangePlayerScore(float points)
+    {
+        EventManager.OnDestroyEnemy?.Invoke(this, points);
+    }
 }

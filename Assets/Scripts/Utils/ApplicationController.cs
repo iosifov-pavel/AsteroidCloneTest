@@ -10,6 +10,8 @@ public class ApplicationController : MonoBehaviour
     [SerializeField]
     private PlayerView _playerView;
     [SerializeField]
+    private UIManager _uiManager;
+    [SerializeField]
     private BulletView _bulletView;
     [SerializeField]
     private AsteroidView _asteroidView;
@@ -39,6 +41,7 @@ public class ApplicationController : MonoBehaviour
     void Start()
     {
         ObjectPool.Setup(_poolHolder);
+        _uiManager.Setup();
         SpawnPlayer();
         SetSpawnres();
     }

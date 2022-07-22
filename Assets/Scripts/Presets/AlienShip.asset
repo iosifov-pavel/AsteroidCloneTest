@@ -16,3 +16,4 @@ MonoBehaviour:
   _speed: 2.5
   _type: 1
   _spawnFrequency: 3
+  _points: 20

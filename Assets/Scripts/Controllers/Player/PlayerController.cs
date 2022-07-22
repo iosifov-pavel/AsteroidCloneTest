@@ -20,6 +20,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     {
         CalculateMovement(engineIsOn);
         _model.Base.Position += _model.Base.MovementVector * timeStep * _model.Acceleration;
+        EventManager.OnPlayerPositionChange?.Invoke(this, _model.Base.Position);
     }
 
     public void RotatePlayer(float rotationDirection, float timeStep)
@@ -52,6 +53,8 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
         _input.Ship.Fire.performed += (c) => CheckShootButtonBullet(c);
         _input.Ship.Laser.performed += (_) => CheckLaserButton();
         _input.Enable();
+
+        EventManager.OnDestroyEnemy += UpdatePlayerScore;
     }
     public void CheckRotateButton(InputAction.CallbackContext context)
     {
@@ -113,6 +116,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
             return;
         }
         _laserCooldownTimer += timeStep;
+        EventManager.OnPlayerLaserCooldownChange?.Invoke(this, Utils.Constants.PlayerLaserCooldown - _laserCooldownTimer);
         if (_laserCooldownTimer >= Utils.Constants.PlayerLaserCooldown)
         {
             _model.RestoreLaser();
@@ -143,5 +147,10 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
                 _model.Base.Position = new Vector2(-_model.Base.Position.x, _model.Base.Position.y);
             }
         }
+    }
+
+    private void UpdatePlayerScore(object sender, float scoreChange)
+    {
+        _model.Score += scoreChange;
     }
 }
