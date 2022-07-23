@@ -140,6 +140,7 @@ public class ApplicationController : MonoBehaviour
 }
 
 
+
 [System.Serializable]
 public struct Masks
 {
