@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Spawner<M,C> : ISpawner where M : BaseModel where C : BaseController<M>, new()
+public abstract class Spawner<M, C> : ISpawner where M : BaseModel where C : BaseController<M>, new()
 {
     protected ObjectData _data;
 
@@ -15,7 +13,7 @@ public abstract class Spawner<M,C> : ISpawner where M : BaseModel where C : Base
         _data = data;
     }
 
-    public abstract void SetSpawnObject(BaseView<M,C> view);
+    public abstract void SetSpawnObject(BaseView<M, C> view);
 
     public abstract void Spawn();
 

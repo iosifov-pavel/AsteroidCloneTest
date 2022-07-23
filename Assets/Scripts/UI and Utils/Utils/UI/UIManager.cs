@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using System;
+using TMPro;
+using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
@@ -47,13 +44,13 @@ public class UIManager : MonoBehaviour
         EventManager.OnPlayerDeath -= GameOver;
     }
 
-    private void UpdatePlayerAngle( object sender, Vector2 forward)
+    private void UpdatePlayerAngle(object sender, Vector2 forward)
     {
         var angle = Vector2.SignedAngle(Vector2.up, forward);
         _angleText.text = string.Format("{0:f1}°", angle);
     }
 
-    private void UpdatePlayerScore( object sender, float score)
+    private void UpdatePlayerScore(object sender, float score)
     {
         _scoreText.text = score.ToString();
     }
@@ -70,13 +67,13 @@ public class UIManager : MonoBehaviour
         _laserCooldownText.text = string.Format("{0:f1} s", cooldown);
     }
 
-    private void UpdatePlayerSpeed( object sender, float speed)
+    private void UpdatePlayerSpeed(object sender, float speed)
     {
         _speedText.text = string.Format("{0:f1} m/s", speed);
     }
 
-    private void UpdatePlayerPosition( object sender, Vector2 position)
+    private void UpdatePlayerPosition(object sender, Vector2 position)
     {
-        _coordinatesText.text = string.Format("X:{0:f1} Y:{1:f1}",position.x,position.y);
+        _coordinatesText.text = string.Format("X:{0:f1} Y:{1:f1}", position.x, position.y);
     }
 }

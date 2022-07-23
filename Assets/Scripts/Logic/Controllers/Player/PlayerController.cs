@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -39,7 +37,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     {
         _model.Acceleration += engineIsOn ? Utils.Constants.ShipAccelerationRate : Utils.Constants.ShipInertiaRate;
         _model.Acceleration = Mathf.Clamp(_model.Acceleration, 0, Utils.Constants.ShipMaxSpeed);
-        if(!engineIsOn)
+        if (!engineIsOn)
         {
             return;
         }
@@ -80,7 +78,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
         {
             return;
         }
-        if(!_model.CanShootLazer)
+        if (!_model.CanShootLazer)
         {
             return;
         }
@@ -108,7 +106,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
                 _rechargeTimer = Utils.Constants.BulletDelay;
             }
         }
-        if(_model.IsLaserMaxCapacity)
+        if (_model.IsLaserMaxCapacity)
         {
             return;
         }
@@ -134,7 +132,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
         {
             var Xdiff = ApplicationController.Instance.LevelBounds.bounds.extents.x - Mathf.Abs(_model.Base.Position.x);
             var Ydiff = ApplicationController.Instance.LevelBounds.bounds.extents.y - Mathf.Abs(_model.Base.Position.y);
-            if( Xdiff >= Ydiff )
+            if (Xdiff >= Ydiff)
             {
                 _model.Base.Position = new Vector2(_model.Base.Position.x, -_model.Base.Position.y);
             }

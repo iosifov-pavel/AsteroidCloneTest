@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class AsteroidModel : BaseModel
 {
@@ -11,7 +8,7 @@ public class AsteroidModel : BaseModel
     {
         get
         {
-            if(_size == AsteroidSize.Small)
+            if (_size == AsteroidSize.Small)
             {
                 return Utils.Constants.AsteroidSmallSpeedScale;
             }

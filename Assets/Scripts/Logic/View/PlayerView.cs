@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlayerView : BaseView<PlayerModel,PlayerController>
+public class PlayerView : BaseView<PlayerModel, PlayerController>
 {
     [SerializeField]
     private Transform _bulletInitialPosition;
@@ -47,7 +45,7 @@ public class PlayerView : BaseView<PlayerModel,PlayerController>
     {
         var timer = 0f;
         _laser.gameObject.SetActive(true);
-        while(timer <= Utils.Constants.LaserAnimationTime)
+        while (timer <= Utils.Constants.LaserAnimationTime)
         {
             var newLaserWidth = _laserWidth.Evaluate(timer / Utils.Constants.LaserAnimationTime);
             var newLaserLength = _laserLenth.Evaluate(timer / Utils.Constants.LaserAnimationTime);

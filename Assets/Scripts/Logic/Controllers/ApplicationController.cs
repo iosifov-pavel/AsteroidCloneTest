@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public class ApplicationController : MonoBehaviour
 {
@@ -103,10 +103,10 @@ public class ApplicationController : MonoBehaviour
     private IEnumerator CheckSpawners(ISpawner spawner)
     {
         var timer = 0f;
-        while(true)
+        while (true)
         {
             timer += Time.deltaTime;
-            if( spawner.CanSpawn(timer))
+            if (spawner.CanSpawn(timer))
             {
                 spawner.Spawn();
                 timer = 0;
@@ -123,15 +123,15 @@ public class ApplicationController : MonoBehaviour
 
     private void Update()
     {
-        if(_gameOver)
+        if (_gameOver)
         {
             return;
         }
-        foreach(var upd in GameObjects)
+        foreach (var upd in GameObjects)
         {
             upd.Update(Time.deltaTime);
         }
-        if(_objectsQueue.Count > 0)
+        if (_objectsQueue.Count > 0)
         {
             GameObjects.AddRange(_objectsQueue);
             _objectsQueue.Clear();

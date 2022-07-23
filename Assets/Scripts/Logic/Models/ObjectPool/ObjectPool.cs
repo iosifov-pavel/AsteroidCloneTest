@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,7 +13,7 @@ public static class ObjectPool
         _poolHolder = poolHolder;
     }
 
-    public static T GetObject<T>(T poolable, ObjectType type, Vector3 position = default, Quaternion rotation = default ) where T : MonoBehaviour
+    public static T GetObject<T>(T poolable, ObjectType type, Vector3 position = default, Quaternion rotation = default) where T : MonoBehaviour
     {
         T result = default;
         if (!_poolObjects.ContainsKey(type))
@@ -25,7 +24,7 @@ public static class ObjectPool
         else if (_poolObjects.ContainsKey(type))
         {
             var firstInActive = _poolObjects[type].FirstOrDefault(p => !p.Active);
-            if(firstInActive != null)
+            if (firstInActive != null)
             {
                 result = (T)firstInActive;
                 result.transform.position = position;

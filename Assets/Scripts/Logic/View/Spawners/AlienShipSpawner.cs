@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class AlienShipSpawner : Spawner<AlienShipModel, AlienShipController>
 {
     BaseView<AlienShipModel, AlienShipController> _view;

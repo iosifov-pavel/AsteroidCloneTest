@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class AlienShipView : BaseView<AlienShipModel,AlienShipController>
+public class AlienShipView : BaseView<AlienShipModel, AlienShipController>
 {
     protected override void SetCallbacks()
     {
