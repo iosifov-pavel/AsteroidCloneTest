@@ -31,13 +31,6 @@ public static class Utils
     }
 
 
-    public static Vector2 CalculateDirectionToPlayer(Vector2 position)
-    {
-        var playerPosition = ApplicationController.Instance.Player.Model.Base.Position;
-        return (playerPosition - position).normalized;
-    }
-
-
     public static bool IsInLayerMask(GameObject obj, LayerMask mask)
     {
         return ((mask.value & (1 << obj.layer)) > 0);

@@ -12,4 +12,5 @@ public static class EventManager
     public static EventHandler<float> OnDestroyEnemy;
     public static EventHandler<float> OnPlayerSpeedChange;
     public static EventHandler<float> OnPlayerLaserCooldownChange;
+    public static EventHandler OnPlayerDeath;
 }

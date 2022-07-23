@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,13 +18,13 @@ public class PlayerView : BaseView<PlayerModel,PlayerController>
     public override void Setup(PlayerModel model)
     {
         base.Setup(model);
-        ApplicationController.Instance.Player = _controller;
         _controller.SetInput(_bulletInitialPosition);
         _laser.gameObject.SetActive(false);
     }
     protected override void SetCallbacks()
     {
         EventManager.OnRotationChanged += RotatePlayer;
+        EventManager.OnPlayerDeath += ResetCallbacks;
         _model.Base.OnPositionChange.AddListener(MovePlayer);
         _model.OnShootLaser.AddListener(ShootLaser);
     }
@@ -55,5 +56,11 @@ public class PlayerView : BaseView<PlayerModel,PlayerController>
             yield return null;
         }
         _laser.gameObject.SetActive(false);
+    }
+
+    private void ResetCallbacks(object sender, EventArgs e)
+    {
+        EventManager.OnRotationChanged -= RotatePlayer;
+        EventManager.OnPlayerDeath -= ResetCallbacks;
     }
 }

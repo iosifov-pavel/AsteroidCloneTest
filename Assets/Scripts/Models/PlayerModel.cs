@@ -15,6 +15,7 @@ public class PlayerModel : BaseModel
         LaserCount = Utils.Constants.PlayerMaxLazers;
         _forward = Vector2.up;
         Score = 0;
+        EventManager.OnPlayerPositionChange?.Invoke(this, Base.Position);
     }
     public Vector2 Forward
     {

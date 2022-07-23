@@ -25,19 +25,30 @@ public class ApplicationController : MonoBehaviour
     private Transform _poolHolder;
     [SerializeField]
     private Masks _masks;
+
+    private PlayerController _player;
+    private List<IUpdateable> _objectsQueue;
+    private AsteroidSpawner _asteroidSpawner;
+    private bool _gameOver;
+
     public BoxCollider2D LevelBounds => _levelCollider;
     public Masks Masks => _masks;
     public AsteroidSpawner AsteroidSpawner => _asteroidSpawner;
-    public PlayerController Player { get; set; }
     public List<IUpdateable> GameObjects;
-    private List<IUpdateable> _objectsQueue;
-    private AsteroidSpawner _asteroidSpawner;
     private void Awake()
     {
+        EventManager.OnPlayerDeath += GameOver;
         GameObjects = new List<IUpdateable>();
         _objectsQueue = new List<IUpdateable>();
         Instance = this;
     }
+
+    private void GameOver(object sender, EventArgs e)
+    {
+        _gameOver = true;
+        EventManager.OnPlayerDeath -= GameOver;
+    }
+
     void Start()
     {
         ObjectPool.Setup(_poolHolder);
@@ -76,6 +87,7 @@ public class ApplicationController : MonoBehaviour
         var playerView = Instantiate(_playerView);
         var playerModel = new PlayerModel(playerData, Vector2.zero);
         playerView.Setup(playerModel);
+        _player = playerView.Controller;
         GameObjects.Add(playerView.Controller);
     }
 
@@ -103,8 +115,18 @@ public class ApplicationController : MonoBehaviour
         }
     }
 
+    public Vector2 CalculateDirectionToPlayer(Vector2 position)
+    {
+        var playerPosition = _player.Model.Base.Position;
+        return (playerPosition - position).normalized;
+    }
+
     private void Update()
     {
+        if(_gameOver)
+        {
+            return;
+        }
         foreach(var upd in GameObjects)
         {
             upd.Update(Time.deltaTime);

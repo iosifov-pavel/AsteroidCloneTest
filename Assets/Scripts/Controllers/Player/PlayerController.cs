@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -93,10 +94,6 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
 
     public override void Update(float timeStep)
     {
-        if(_isDead)
-        {
-            return;
-        }
         _rechargeTimer -= timeStep;
         if (_isRotating)
         {
@@ -127,8 +124,7 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     {
         if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Enemy))
         {
-            _isDead = true;
-            ObjectPool.ReturnToPool(poolable);
+            EventManager.OnPlayerDeath?.Invoke(this, EventArgs.Empty);
         }
     }
 
