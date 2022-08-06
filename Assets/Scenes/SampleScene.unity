@@ -541,24 +541,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4ddd52d9a9ead7d408e866b01cff3b67, type: 2}
   - {fileID: 11400000, guid: 09691f5bb43a7ba40b4888cc63a18396, type: 2}
   - {fileID: 11400000, guid: aeffab75a4bc10d4f81b4de1c4daf706, type: 2}
-  _levelCollider: {fileID: 1763831564}
   _poolHolder: {fileID: 1677593261}
-  _masks:
-    Player:
-      serializedVersion: 2
-      m_Bits: 8
-    Bullet:
-      serializedVersion: 2
-      m_Bits: 64
-    Screen:
+  _levelData:
+    Mask:
       serializedVersion: 2
       m_Bits: 256
     Laser:
       serializedVersion: 2
       m_Bits: 128
-    Enemy:
-      serializedVersion: 2
-      m_Bits: 512
+    Bounds: {fileID: 1763831564}
 --- !u!1 &1993801577
 GameObject:
   m_ObjectHideFlags: 0
