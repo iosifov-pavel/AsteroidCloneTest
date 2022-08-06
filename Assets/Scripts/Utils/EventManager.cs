@@ -15,6 +15,6 @@ public class EventManager
     public EventHandler<Action<Vector2>> OnPlayerPositionRequest;
     public EventHandler<IUpdateable> OnSpawnNewController;
     public EventHandler<Transform> OnBulletSpawn;
-    public EventHandler<KeyValuePair<Vector2,Vector2>> OnAsteroidDisassemble;
+    public EventHandler<KeyValuePair<Vector2, Vector2>> OnAsteroidDisassemble;
     public EventHandler OnGameStart;
 }

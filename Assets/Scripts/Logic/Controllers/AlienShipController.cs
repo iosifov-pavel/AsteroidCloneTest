@@ -26,7 +26,7 @@ public class AlienShipController : BaseController
 
     public override void Update(float timeStep)
     {
-        _eventManager.OnPlayerPositionRequest?.Invoke(this, (v) => PlayerPositionCallback(v,timeStep));
+        _eventManager.OnPlayerPositionRequest?.Invoke(this, (v) => PlayerPositionCallback(v, timeStep));
     }
 
     private void PlayerPositionCallback(Vector2 playerPosition, float timeStep)

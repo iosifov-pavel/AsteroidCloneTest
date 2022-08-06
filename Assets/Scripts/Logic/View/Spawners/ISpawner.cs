@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public interface ISpawner
 {
     public void Setup(ObjectData data, BaseView view, EventManager eventManager, LevelData levelData);

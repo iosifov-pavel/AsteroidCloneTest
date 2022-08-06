@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Spawner: ISpawner
+public abstract class Spawner : ISpawner
 {
     protected ObjectData _data;
     protected BaseView _view;

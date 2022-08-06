@@ -41,7 +41,7 @@ public abstract class BaseController : IFlyForward, IUpdateable
 
     protected virtual void CheckExitCollision(Collider2D collision, IPoolable poolable)
     {
-        if(!IsInLayerMask(collision.gameObject, _levelData.Mask))
+        if (!IsInLayerMask(collision.gameObject, _levelData.Mask))
         {
             return;
         }

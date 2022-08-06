@@ -51,7 +51,7 @@ public class BaseView : MonoBehaviour, IPoolable
 
     private void RotateView(Vector2 newForward)
     {
-        if(!_rotatable)
+        if (!_rotatable)
         {
             return;
         }
@@ -65,7 +65,7 @@ public class BaseView : MonoBehaviour, IPoolable
     private void CheckSize()
     {
         var scale = 1f;
-        if(_model as AsteroidModel != null)
+        if (_model as AsteroidModel != null)
         {
             scale = ((AsteroidModel)_model).Size == AsteroidSize.Big ? _model.Data.Scale : _model.Data.Scale / 2;
         }

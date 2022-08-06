@@ -22,14 +22,14 @@ public class AsteroidSpawner : Spawner
         _eventManager.OnSpawnNewController?.Invoke(this, controller);
     }
 
-    public void SpawnAsteroidPart(object sender, KeyValuePair<Vector2,Vector2> spawnData)
+    public void SpawnAsteroidPart(object sender, KeyValuePair<Vector2, Vector2> spawnData)
     {
         var view = ObjectPool.GetObject(_view, _data.Type, spawnData.Key);
         var model = new AsteroidModel(_data, spawnData.Key, spawnData.Value, AsteroidSize.Small);
         var controller = new AsteroidController();
         controller.SetUtils(_eventManager, _levelData);
         controller.Setup(model);
-        view.Setup(model,controller, false);
+        view.Setup(model, controller, false);
         _eventManager.OnSpawnNewController?.Invoke(this, controller);
     }
 }
