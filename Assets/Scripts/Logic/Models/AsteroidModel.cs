@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AsteroidModel : BaseModel
 {
+    public const float AsteroidSmallSpeedScale = 1.25f;
     private AsteroidSize _size;
     public AsteroidSize Size => _size;
     public float SpeedScale
@@ -10,7 +11,7 @@ public class AsteroidModel : BaseModel
         {
             if (_size == AsteroidSize.Small)
             {
-                return Utils.Constants.AsteroidSmallSpeedScale;
+                return AsteroidSmallSpeedScale;
             }
             return 1;
         }

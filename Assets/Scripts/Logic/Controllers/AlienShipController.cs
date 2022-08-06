@@ -3,9 +3,13 @@ using UnityEngine;
 public class AlienShipController : BaseController
 {
     private new AlienShipModel _model;
+    public override void Setup(BaseModel model)
+    {
+        _model = (AlienShipModel)model;
+    }
     protected override void CheckEnterCollision(Collider2D collision, IPoolable poolable)
     {
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Laser))
+        if (IsInLayerMask(collision.gameObject, _levelData.Laser))
         {
             ObjectPool.ReturnToPool(poolable);
             ChangePlayerScore(_model.Data.Points);
@@ -22,7 +26,12 @@ public class AlienShipController : BaseController
 
     public override void Update(float timeStep)
     {
-        _model.Base.MovementVector = ApplicationController.Instance.CalculateDirectionToPlayer(_model.Base.Position);
+        _eventManager.OnPlayerPositionRequest?.Invoke(this, (v) => PlayerPositionCallback(v,timeStep));
+    }
+
+    private void PlayerPositionCallback(Vector2 playerPosition, float timeStep)
+    {
+        _model.Base.MovementVector = (playerPosition - _model.Base.Position).normalized;
         _model.Base.Position += _model.Base.MovementVector * timeStep * _model.Data.Speed;
     }
 }

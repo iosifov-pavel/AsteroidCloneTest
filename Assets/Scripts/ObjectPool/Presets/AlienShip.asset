@@ -17,6 +17,4 @@ MonoBehaviour:
   _type: 1
   _spawnFrequency: 3
   _points: 20
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 512
+  _objectScale: 0.22

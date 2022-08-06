@@ -27,8 +27,9 @@ public class BaseView : MonoBehaviour, IPoolable
         _model = model;
         _controller = controller;
         _rotatable = rotatable;
-        _sprite.sprite = model.Data.EnemySprite;
+        _sprite.sprite = model.Data.Sprite;
         SetCallbacks();
+        CheckSize();
         Active = true;
     }
 
@@ -63,7 +64,15 @@ public class BaseView : MonoBehaviour, IPoolable
 
     private void CheckSize()
     {
-        var asteroidSize = ((AsteroidModel)_model).Size == AsteroidSize.Small ? Utils.Constants.AsteroidSmallSize : Utils.Constants.AsteroidBigSize;
-        _body.localScale = new Vector3(asteroidSize, asteroidSize, 1);
+        var scale = 1f;
+        if(_model as AsteroidModel != null)
+        {
+            scale = ((AsteroidModel)_model).Size == AsteroidSize.Big ? _model.Data.Scale : _model.Data.Scale / 2;
+        }
+        else
+        {
+            scale = _model.Data.Scale;
+        }
+        _body.localScale = new Vector3(scale, scale, 1);
     }
 }

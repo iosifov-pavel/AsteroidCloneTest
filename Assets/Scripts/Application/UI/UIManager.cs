@@ -18,30 +18,48 @@ public class UIManager : MonoBehaviour
     private TMP_Text _laserCooldownText;
     [SerializeField]
     private GameOverWindow _gameOverWindow;
+    [SerializeField]
+    private StartGameWindow _startGameWindow;
+    [SerializeField]
+    private GameObject _gameUI;
 
-    public void Setup()
+    private EventManager _eventManager;
+
+    public void Setup(EventManager eventManager)
     {
-        EventManager.OnRotationChanged += UpdatePlayerAngle;
-        EventManager.OnPlayerScoreChange += UpdatePlayerScore;
-        EventManager.OnLaserCountChange += UpdatePlayerLaserCount;
-        EventManager.OnPlayerLaserCooldownChange += UpdatePlayerLaserCooldown;
-        EventManager.OnPlayerSpeedChange += UpdatePlayerSpeed;
-        EventManager.OnPlayerPositionChange += UpdatePlayerPosition;
-        EventManager.OnPlayerDeath += GameOver;
+        _eventManager = eventManager;
+        _eventManager.OnRotationChanged += UpdatePlayerAngle;
+        _eventManager.OnPlayerScoreChange += UpdatePlayerScore;
+        _eventManager.OnLaserCountChange += UpdatePlayerLaserCount;
+        _eventManager.OnPlayerLaserCooldownChange += UpdatePlayerLaserCooldown;
+        _eventManager.OnPlayerSpeedChange += UpdatePlayerSpeed;
+        _eventManager.OnPlayerPositionChange += UpdatePlayerPosition;
+        _eventManager.OnGameStart += OnGameStart;
+        _eventManager.OnPlayerDeath += GameOver;
         _gameOverWindow.gameObject.SetActive(false);
+        _gameUI.SetActive(false);
+        _startGameWindow.Setup(_eventManager);
+    }
+
+    private void OnGameStart(object sender, EventArgs e)
+    {
+        _gameUI.SetActive(true);
+        _startGameWindow.gameObject.SetActive(false);
     }
 
     private void GameOver(object sender, EventArgs e)
     {
-        _gameOverWindow.gameObject.SetActive(true);
         _gameOverWindow.Setup(_scoreText.text);
-        EventManager.OnRotationChanged -= UpdatePlayerAngle;
-        EventManager.OnPlayerScoreChange -= UpdatePlayerScore;
-        EventManager.OnLaserCountChange -= UpdatePlayerLaserCount;
-        EventManager.OnPlayerLaserCooldownChange -= UpdatePlayerLaserCooldown;
-        EventManager.OnPlayerSpeedChange -= UpdatePlayerSpeed;
-        EventManager.OnPlayerPositionChange -= UpdatePlayerPosition;
-        EventManager.OnPlayerDeath -= GameOver;
+        _gameUI.SetActive(false);
+        _gameOverWindow.gameObject.SetActive(true);
+        _eventManager.OnRotationChanged -= UpdatePlayerAngle;
+        _eventManager.OnPlayerScoreChange -= UpdatePlayerScore;
+        _eventManager.OnLaserCountChange -= UpdatePlayerLaserCount;
+        _eventManager.OnPlayerLaserCooldownChange -= UpdatePlayerLaserCooldown;
+        _eventManager.OnPlayerSpeedChange -= UpdatePlayerSpeed;
+        _eventManager.OnPlayerPositionChange -= UpdatePlayerPosition;
+        _eventManager.OnPlayerDeath -= GameOver;
+        _eventManager.OnGameStart -= OnGameStart;
     }
 
     private void UpdatePlayerAngle(object sender, Vector2 forward)
@@ -57,7 +75,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdatePlayerLaserCount(object sender, int count)
     {
-        var laserMax = count >= Utils.Constants.PlayerMaxLazers;
+        var laserMax = count >= PlayerModel.LaserCapacity;
         _laserCooldownText.gameObject.SetActive(!laserMax);
         _lasersText.text = count.ToString();
     }

@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d67ba5fc7ae18b4caf00319b1fbf9a2, type: 3}
-  m_Name: Asteroid
+  m_Name: Bullet
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 21300000, guid: 8ffa581e5fe22ac47ad8be1b1535fb96, type: 3}
-  _speed: 3
-  _type: 0
-  _spawnFrequency: 1
-  _points: 10
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 512
+  _sprite: {fileID: 21300000, guid: 02e17590d96748647917e643ef5c157c, type: 3}
+  _speed: 6.5
+  _type: 2
+  _spawnFrequency: 0
+  _points: 0
+  _objectScale: 0.1

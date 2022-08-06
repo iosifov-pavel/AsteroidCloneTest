@@ -26,12 +26,11 @@ public class PlayerView : BaseView
     protected override void SetCallbacks()
     {
         base.SetCallbacks();
-        EventManager.OnRotationChanged += RotatePlayer;
-        EventManager.OnPlayerDeath += ResetCallbacks;
-        _model.OnShootLaser.AddListener(ShootLaser);
+        _model.OnShootLaser += ShootLaser;
+        _model.OnPlayerRotationChange += RotatePlayer;
     }
 
-    private void RotatePlayer(object sender, Vector2 newForward)
+    private void RotatePlayer(Vector2 newForward)
     {
         transform.up = newForward;
     }
@@ -45,20 +44,14 @@ public class PlayerView : BaseView
     {
         var timer = 0f;
         _laser.gameObject.SetActive(true);
-        while (timer <= Utils.Constants.LaserAnimationTime)
+        while (timer <= PlayerModel.LaserAnimationTime)
         {
-            var newLaserWidth = _laserWidth.Evaluate(timer / Utils.Constants.LaserAnimationTime);
-            var newLaserLength = _laserLenth.Evaluate(timer / Utils.Constants.LaserAnimationTime);
+            var newLaserWidth = _laserWidth.Evaluate(timer / PlayerModel.LaserAnimationTime);
+            var newLaserLength = _laserLenth.Evaluate(timer / PlayerModel.LaserAnimationTime);
             _laser.localScale = new Vector3(newLaserWidth, newLaserLength, 1);
             timer += Time.deltaTime;
             yield return null;
         }
         _laser.gameObject.SetActive(false);
-    }
-
-    private void ResetCallbacks(object sender, EventArgs e)
-    {
-        EventManager.OnRotationChanged -= RotatePlayer;
-        EventManager.OnPlayerDeath -= ResetCallbacks;
     }
 }

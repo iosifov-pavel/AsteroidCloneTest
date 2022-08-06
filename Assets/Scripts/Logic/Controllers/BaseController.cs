@@ -1,13 +1,21 @@
 using UnityEngine;
 
-public abstract class BaseController : IFlyForward
+public abstract class BaseController : IFlyForward, IUpdateable
 {
     protected BaseModel _model;
-    public BaseModel Model { get => _model; set => _model = value; }
+    protected EventManager _eventManager;
+    protected LevelData _levelData;
+    public virtual BaseModel Model { get => _model; }
 
-    public void FlyForward(float deltaTime, float speedScale = 1)
+    public virtual void FlyForward(float deltaTime)
     {
-        _model.Base.Position += _model.Base.MovementVector * deltaTime * _model.Data.Speed * speedScale;
+        _model.Base.Position += _model.Base.MovementVector * deltaTime * _model.Data.Speed;
+    }
+
+    public void SetUtils(EventManager eventManager, LevelData levelData)
+    {
+        _eventManager = eventManager;
+        _levelData = levelData;
     }
 
     public virtual void Setup(BaseModel model)
@@ -33,7 +41,7 @@ public abstract class BaseController : IFlyForward
 
     protected virtual void CheckExitCollision(Collider2D collision, IPoolable poolable)
     {
-        if(!Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Screen))
+        if(!IsInLayerMask(collision.gameObject, _levelData.Mask))
         {
             return;
         }
@@ -43,6 +51,11 @@ public abstract class BaseController : IFlyForward
 
     protected void ChangePlayerScore(float points)
     {
-        EventManager.OnDestroyEnemy?.Invoke(this, points);
+        _eventManager.OnDestroyEnemy?.Invoke(this, points);
+    }
+
+    protected bool IsInLayerMask(GameObject obj, LayerMask mask)
+    {
+        return (mask.value & (1 << obj.layer)) > 0;
     }
 }

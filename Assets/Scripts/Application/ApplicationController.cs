@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class ApplicationController : MonoBehaviour
 {
-    public static ApplicationController Instance;
     [SerializeField]
     private BaseView _baseView;
     [SerializeField]
@@ -16,39 +15,41 @@ public class ApplicationController : MonoBehaviour
     [SerializeField]
     private List<ObjectData> _presets;
     [SerializeField]
-    private BoxCollider2D _levelCollider;
-    [SerializeField]
     private Transform _poolHolder;
     [SerializeField]
-    private Masks _masks;
+    private LevelData _levelData;
 
+    private List<IUpdateable> _objectsQueue;
+    private List<IUpdateable> _activeObjects;
     private PlayerController _player;
-    private List<BaseController> _objectsQueue;
-    private AsteroidSpawner _asteroidSpawner;
     private bool _gameOver;
-
-    public BoxCollider2D LevelBounds => _levelCollider;
-    public Masks Masks => _masks;
-    public AsteroidSpawner AsteroidSpawner => _asteroidSpawner;
-    public List<BaseController> GameObjects;
+    private EventManager _eventManager;
     private void Awake()
     {
-        EventManager.OnPlayerDeath += GameOver;
-        GameObjects = new List<BaseController>();
-        _objectsQueue = new List<BaseController>();
-        Instance = this;
+        _activeObjects = new List<IUpdateable>();
+        _objectsQueue = new List<IUpdateable>();
+        ObjectPool.Setup(_poolHolder);
+        _eventManager = new EventManager();
+        _uiManager.Setup(_eventManager);
+        _eventManager.OnPlayerDeath += GameOver;
+        _eventManager.OnSpawnNewController += OnSpawnNewController;
+        _eventManager.OnBulletSpawn += SpawnBullet;
+        _eventManager.OnGameStart += StartGame;
+    }
+
+    private void OnSpawnNewController(object sender, IUpdateable controller)
+    {
+        _objectsQueue.Add(controller);
     }
 
     private void GameOver(object sender, EventArgs e)
     {
         _gameOver = true;
-        EventManager.OnPlayerDeath -= GameOver;
+        _eventManager = null;
     }
 
-    void Start()
+    void StartGame(object sender, EventArgs e)
     {
-        ObjectPool.Setup(_poolHolder);
-        _uiManager.Setup();
         SpawnPlayer();
         SetSpawnres();
     }
@@ -61,20 +62,18 @@ public class ApplicationController : MonoBehaviour
 
     private void SetAsteroidSpawner()
     {
-        //var asteroidData = _presets.First(p => p.Type == ObjectType.Asteroid);
-        //_asteroidSpawner = new AsteroidSpawner();
-        //_asteroidSpawner.Setup(asteroidData);
-        //_asteroidSpawner.SetSpawnObject(_asteroidView);
-        //StartCoroutine(CheckSpawners(_asteroidSpawner));
+        var asteroidData = _presets.First(p => p.Type == ObjectType.Asteroid);
+        var asteroidSpawner = new AsteroidSpawner();
+        asteroidSpawner.Setup(asteroidData, _baseView, _eventManager, _levelData);
+        StartCoroutine(CheckSpawners(asteroidSpawner));
     }
 
     private void SetAlienShipSpawner()
     {
-        //var alienShipData = _presets.First(p => p.Type == ObjectType.AlienShip);
-        //var alienShip = new AlienShipSpawner();
-        //alienShip.Setup(alienShipData);
-        //alienShip.SetSpawnObject(_alienShipView);
-        //StartCoroutine(CheckSpawners(alienShip));
+        var alienShipData = _presets.First(p => p.Type == ObjectType.AlienShip);
+        var alienShip = new AlienShipSpawner();
+        alienShip.Setup(alienShipData, _baseView, _eventManager, _levelData);
+        StartCoroutine(CheckSpawners(alienShip));
     }
 
     private void SpawnPlayer()
@@ -83,18 +82,20 @@ public class ApplicationController : MonoBehaviour
         var playerView = Instantiate(_playerView);
         var playerModel = new PlayerModel(playerData, Vector2.zero);
         _player = new PlayerController();
+        _player.SetUtils(_eventManager, _levelData);
         _player.Setup(playerModel);
         _player.SetInput(playerView.BulletPosition);
-        playerView.Setup(playerModel, _player, true);
-        GameObjects.Add(_player);
+        playerView.Setup(playerModel, _player, false);
+        _activeObjects.Add(_player);
     }
 
-    public void SpawnBullet(Transform bulletOrigin)
+    public void SpawnBullet(object sender, Transform bulletOrigin)
     {
         var bulletData = _presets.First(p => p.Type == ObjectType.Bullet);
         var bulletView = ObjectPool.GetObject(_baseView, bulletData.Type, position: bulletOrigin.position, rotation: bulletOrigin.rotation);
         var bulletModel = new BulletModel(bulletData, bulletView.transform.position, bulletView.transform.up);
         var bulletController = new BulletController();
+        bulletController.SetUtils(_eventManager, _levelData);
         bulletController.Setup(bulletModel);
         bulletView.Setup(bulletModel, bulletController, false);
         _objectsQueue.Add(bulletController);
@@ -127,31 +128,14 @@ public class ApplicationController : MonoBehaviour
         {
             return;
         }
-        foreach (var upd in GameObjects)
+        foreach (var upd in _activeObjects)
         {
             upd.Update(Time.deltaTime);
         }
         if (_objectsQueue.Count > 0)
         {
-            GameObjects.AddRange(_objectsQueue);
+            _activeObjects.AddRange(_objectsQueue);
             _objectsQueue.Clear();
         }
     }
-}
-
-
-
-[System.Serializable]
-public struct Masks
-{
-    [SerializeField]
-    public LayerMask Player;
-    [SerializeField]
-    public LayerMask Bullet;
-    [SerializeField]
-    public LayerMask Screen;
-    [SerializeField]
-    public LayerMask Laser;
-    [SerializeField]
-    public LayerMask Enemy;
 }

@@ -1,13 +1,16 @@
+using UnityEngine;
+
 public class AlienShipSpawner : Spawner
 {
-    public override void Spawn()
+    protected override void PlayerPositionCallback(Vector2 playerPosition)
     {
-        var spawnPosition = CalculateSpawnPosition(ApplicationController.Instance.LevelBounds);
+        var spawnPosition = CalculateSpawnPosition(_levelData.Bounds);
         var model = new AlienShipModel(_data, spawnPosition);
         var controller = new AlienShipController();
         var view = ObjectPool.GetObject(_view, _data.Type, spawnPosition);
+        controller.SetUtils(_eventManager, _levelData);
         controller.Setup(model);
-        view.Setup(model,controller,true);
-        ApplicationController.Instance.GameObjects.Add(controller);
+        view.Setup(model, controller, true);
+        _eventManager.OnSpawnNewController?.Invoke(this, controller);
     }
 }
