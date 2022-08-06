@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class AsteroidController : BaseController<AsteroidModel>
+public class AsteroidController : BaseController
 {
+    private new AsteroidModel _model;
     protected override void CheckEnterCollision(Collider2D collision, IPoolable poolable)
     {
         var pointsScale = 1.5f;
@@ -9,27 +10,22 @@ public class AsteroidController : BaseController<AsteroidModel>
         {
             pointsScale = 1;
         }
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Bullet))
-        {
-            if (_model.Size == AsteroidSize.Big)
-            {
-                Disassemble();
-            }
-            EventManager.OnDestroyEnemy?.Invoke(this, _model.Data.Points * pointsScale);
-            ObjectPool.ReturnToPool(poolable);
-        }
         if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Laser))
         {
             EventManager.OnDestroyEnemy?.Invoke(this, _model.Data.Points * pointsScale);
             ObjectPool.ReturnToPool(poolable);
         }
-    }
-
-    protected override void CheckExitCollision(Collider2D collision, IPoolable poolable)
-    {
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Screen))
+        else if (collision.gameObject.TryGetComponent<BaseView>(out var view))
         {
-            ObjectPool.ReturnToPool(poolable);
+            if (view.Model.Data.Type == ObjectType.Bullet)
+            {
+                if (_model.Size == AsteroidSize.Big)
+                {
+                    Disassemble();
+                }
+                EventManager.OnDestroyEnemy?.Invoke(this, _model.Data.Points * pointsScale);
+                ObjectPool.ReturnToPool(poolable);
+            }
         }
     }
 

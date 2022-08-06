@@ -1,19 +1,19 @@
 using UnityEngine;
 
-public abstract class Spawner<M, C> : ISpawner where M : BaseModel where C : BaseController<M>, new()
+public abstract class Spawner: ISpawner
 {
     protected ObjectData _data;
+    protected BaseView _view;
 
     public bool CanSpawn(float time)
     {
         return time >= _data.SpawnFrequency;
     }
-    public void Setup(ObjectData data)
+    public void Setup(ObjectData data, BaseView view)
     {
         _data = data;
+        _view = view;
     }
-
-    public abstract void SetSpawnObject(BaseView<M, C> view);
 
     public abstract void Spawn();
 

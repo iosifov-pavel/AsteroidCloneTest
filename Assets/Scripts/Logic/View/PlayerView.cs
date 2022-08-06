@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerView : BaseView<PlayerModel, PlayerController>
+public class PlayerView : BaseView
 {
     [SerializeField]
     private Transform _bulletInitialPosition;
@@ -13,27 +13,27 @@ public class PlayerView : BaseView<PlayerModel, PlayerController>
     [SerializeField]
     private Transform _laser;
 
-    public override void Setup(PlayerModel model)
+    private new PlayerModel _model;
+
+    public Transform BulletPosition => _bulletInitialPosition;
+
+    public override void Setup(BaseModel model, BaseController controller, bool rotatable)
     {
-        base.Setup(model);
-        _controller.SetInput(_bulletInitialPosition);
+        _model = (PlayerModel)model;
+        base.Setup(model, controller, rotatable);
         _laser.gameObject.SetActive(false);
     }
     protected override void SetCallbacks()
     {
+        base.SetCallbacks();
         EventManager.OnRotationChanged += RotatePlayer;
         EventManager.OnPlayerDeath += ResetCallbacks;
-        _model.Base.OnPositionChange.AddListener(MovePlayer);
         _model.OnShootLaser.AddListener(ShootLaser);
     }
 
     private void RotatePlayer(object sender, Vector2 newForward)
     {
         transform.up = newForward;
-    }
-    private void MovePlayer(Vector2 newPosition)
-    {
-        transform.position = newPosition;
     }
 
     private void ShootLaser()

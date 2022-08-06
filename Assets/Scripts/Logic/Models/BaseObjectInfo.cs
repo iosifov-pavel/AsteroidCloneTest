@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -36,6 +37,6 @@ public class BaseObjectInfo
         _movementVector = movementVector;
     }
 
-    public UnityEvent<Vector2> OnPositionChange = new UnityEvent<Vector2>();
-    public UnityEvent<Vector2> OnMovementChange = new UnityEvent<Vector2>();
+    public Action<Vector2> OnPositionChange;
+    public Action<Vector2> OnMovementChange;
 }

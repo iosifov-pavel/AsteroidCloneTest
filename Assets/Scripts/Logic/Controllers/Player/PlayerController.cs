@@ -2,9 +2,10 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : BaseController<PlayerModel>, IPlayerController
+public class PlayerController : BaseController, IPlayerController
 {
     private ShipControl _input;
+    private new PlayerModel _model;
     private bool _isRotating;
     private bool _isMoving;
     private bool _isFiring;
@@ -14,6 +15,11 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     private bool _isDead;
 
     private Transform _bulletInitialPosition;
+
+    public override void Setup(BaseModel model)
+    {
+        _model = (PlayerModel)model;
+    }
 
     public void MovePlayer(bool engineIsOn, float timeStep)
     {
@@ -120,26 +126,30 @@ public class PlayerController : BaseController<PlayerModel>, IPlayerController
     }
     protected override void CheckEnterCollision(Collider2D collision, IPoolable poolable)
     {
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Enemy))
+        if(collision.gameObject.TryGetComponent<BaseView>( out var view))
         {
-            EventManager.OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+            if(view.Model.Data.Type == ObjectType.Asteroid || view.Model.Data.Type == ObjectType.AlienShip)
+            {
+                EventManager.OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 
     protected override void CheckExitCollision(Collider2D collision, IPoolable poolable)
     {
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Screen))
+        if (!Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Screen))
         {
-            var Xdiff = ApplicationController.Instance.LevelBounds.bounds.extents.x - Mathf.Abs(_model.Base.Position.x);
-            var Ydiff = ApplicationController.Instance.LevelBounds.bounds.extents.y - Mathf.Abs(_model.Base.Position.y);
-            if (Xdiff >= Ydiff)
-            {
-                _model.Base.Position = new Vector2(_model.Base.Position.x, -_model.Base.Position.y);
-            }
-            else
-            {
-                _model.Base.Position = new Vector2(-_model.Base.Position.x, _model.Base.Position.y);
-            }
+            return;
+        }
+        var Xdiff = ApplicationController.Instance.LevelBounds.bounds.extents.x - Mathf.Abs(_model.Base.Position.x);
+        var Ydiff = ApplicationController.Instance.LevelBounds.bounds.extents.y - Mathf.Abs(_model.Base.Position.y);
+        if (Xdiff >= Ydiff)
+        {
+            _model.Base.Position = new Vector2(_model.Base.Position.x, -_model.Base.Position.y);
+        }
+        else
+        {
+            _model.Base.Position = new Vector2(-_model.Base.Position.x, _model.Base.Position.y);
         }
     }
 

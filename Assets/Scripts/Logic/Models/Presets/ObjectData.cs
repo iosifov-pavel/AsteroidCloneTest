@@ -13,12 +13,15 @@ public class ObjectData : ScriptableObject
     private float _spawnFrequency;
     [SerializeField]
     private float _points;
+    [SerializeField]
+    private LayerMask _layerMask;
 
     public ObjectType Type => _type;
     public float SpawnFrequency => _spawnFrequency;
     public float Speed => _speed;
     public Sprite EnemySprite => _sprite;
     public float Points => _points;
+    public LayerMask Layer => _layerMask;
 }
 
 public enum ObjectType

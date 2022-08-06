@@ -8,15 +8,11 @@ public class ApplicationController : MonoBehaviour
 {
     public static ApplicationController Instance;
     [SerializeField]
+    private BaseView _baseView;
+    [SerializeField]
     private PlayerView _playerView;
     [SerializeField]
     private UIManager _uiManager;
-    [SerializeField]
-    private BulletView _bulletView;
-    [SerializeField]
-    private AsteroidView _asteroidView;
-    [SerializeField]
-    private AlienShipView _alienShipView;
     [SerializeField]
     private List<ObjectData> _presets;
     [SerializeField]
@@ -27,19 +23,19 @@ public class ApplicationController : MonoBehaviour
     private Masks _masks;
 
     private PlayerController _player;
-    private List<IUpdateable> _objectsQueue;
+    private List<BaseController> _objectsQueue;
     private AsteroidSpawner _asteroidSpawner;
     private bool _gameOver;
 
     public BoxCollider2D LevelBounds => _levelCollider;
     public Masks Masks => _masks;
     public AsteroidSpawner AsteroidSpawner => _asteroidSpawner;
-    public List<IUpdateable> GameObjects;
+    public List<BaseController> GameObjects;
     private void Awake()
     {
         EventManager.OnPlayerDeath += GameOver;
-        GameObjects = new List<IUpdateable>();
-        _objectsQueue = new List<IUpdateable>();
+        GameObjects = new List<BaseController>();
+        _objectsQueue = new List<BaseController>();
         Instance = this;
     }
 
@@ -65,20 +61,20 @@ public class ApplicationController : MonoBehaviour
 
     private void SetAsteroidSpawner()
     {
-        var asteroidData = _presets.First(p => p.Type == ObjectType.Asteroid);
-        _asteroidSpawner = new AsteroidSpawner();
-        _asteroidSpawner.Setup(asteroidData);
-        _asteroidSpawner.SetSpawnObject(_asteroidView);
-        StartCoroutine(CheckSpawners(_asteroidSpawner));
+        //var asteroidData = _presets.First(p => p.Type == ObjectType.Asteroid);
+        //_asteroidSpawner = new AsteroidSpawner();
+        //_asteroidSpawner.Setup(asteroidData);
+        //_asteroidSpawner.SetSpawnObject(_asteroidView);
+        //StartCoroutine(CheckSpawners(_asteroidSpawner));
     }
 
     private void SetAlienShipSpawner()
     {
-        var alienShipData = _presets.First(p => p.Type == ObjectType.AlienShip);
-        var alienShip = new AlienShipSpawner();
-        alienShip.Setup(alienShipData);
-        alienShip.SetSpawnObject(_alienShipView);
-        StartCoroutine(CheckSpawners(alienShip));
+        //var alienShipData = _presets.First(p => p.Type == ObjectType.AlienShip);
+        //var alienShip = new AlienShipSpawner();
+        //alienShip.Setup(alienShipData);
+        //alienShip.SetSpawnObject(_alienShipView);
+        //StartCoroutine(CheckSpawners(alienShip));
     }
 
     private void SpawnPlayer()
@@ -86,18 +82,22 @@ public class ApplicationController : MonoBehaviour
         var playerData = _presets.First(p => p.Type == ObjectType.Player);
         var playerView = Instantiate(_playerView);
         var playerModel = new PlayerModel(playerData, Vector2.zero);
-        playerView.Setup(playerModel);
-        _player = playerView.Controller;
-        GameObjects.Add(playerView.Controller);
+        _player = new PlayerController();
+        _player.Setup(playerModel);
+        _player.SetInput(playerView.BulletPosition);
+        playerView.Setup(playerModel, _player, true);
+        GameObjects.Add(_player);
     }
 
     public void SpawnBullet(Transform bulletOrigin)
     {
         var bulletData = _presets.First(p => p.Type == ObjectType.Bullet);
-        var bulletView = ObjectPool.GetObject(_bulletView, bulletData.Type, position: bulletOrigin.position, rotation: bulletOrigin.rotation);
+        var bulletView = ObjectPool.GetObject(_baseView, bulletData.Type, position: bulletOrigin.position, rotation: bulletOrigin.rotation);
         var bulletModel = new BulletModel(bulletData, bulletView.transform.position, bulletView.transform.up);
-        bulletView.Setup(bulletModel);
-        _objectsQueue.Add(bulletView.Controller);
+        var bulletController = new BulletController();
+        bulletController.Setup(bulletModel);
+        bulletView.Setup(bulletModel, bulletController, false);
+        _objectsQueue.Add(bulletController);
     }
 
     private IEnumerator CheckSpawners(ISpawner spawner)

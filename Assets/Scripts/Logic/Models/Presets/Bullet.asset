@@ -16,3 +16,7 @@ MonoBehaviour:
   _speed: 6.5
   _type: 2
   _spawnFrequency: 0
+  _points: 0
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64

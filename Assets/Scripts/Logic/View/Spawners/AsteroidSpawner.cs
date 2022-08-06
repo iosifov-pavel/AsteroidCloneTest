@@ -1,13 +1,7 @@
 using UnityEngine;
 
-public class AsteroidSpawner : Spawner<AsteroidModel, AsteroidController>
+public class AsteroidSpawner : Spawner
 {
-    BaseView<AsteroidModel, AsteroidController> _view;
-    public override void SetSpawnObject(BaseView<AsteroidModel, AsteroidController> view)
-    {
-        _view = view;
-    }
-
     public override void Spawn()
     {
         var spawnPosition = CalculateSpawnPosition(ApplicationController.Instance.LevelBounds);
@@ -15,15 +9,19 @@ public class AsteroidSpawner : Spawner<AsteroidModel, AsteroidController>
         var view = ObjectPool.GetObject(_view, _data.Type, spawnPosition);
         var size = Random.Range(0f, 1f) > 0.5f ? AsteroidSize.Big : AsteroidSize.Small;
         var model = new AsteroidModel(_data, spawnPosition, direction, size);
-        view.Setup(model);
-        ApplicationController.Instance.GameObjects.Add(view.Controller);
+        var controller = new AsteroidController();
+        controller.Setup(model);
+        view.Setup(model,controller, false);
+        ApplicationController.Instance.GameObjects.Add(controller);
     }
 
     public void Spawn(AsteroidSize size, Vector2 spawnPosition, Vector2 direction)
     {
         var view = ObjectPool.GetObject(_view, _data.Type, spawnPosition);
         var model = new AsteroidModel(_data, spawnPosition, direction, size);
-        view.Setup(model);
-        ApplicationController.Instance.GameObjects.Add(view.Controller);
+        var controller = new AsteroidController();
+        controller.Setup(model);
+        view.Setup(model,controller, false);
+        ApplicationController.Instance.GameObjects.Add(controller);
     }
 }

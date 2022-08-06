@@ -1,26 +1,22 @@
 using UnityEngine;
 
-public class AlienShipController : BaseController<AlienShipModel>
+public class AlienShipController : BaseController
 {
+    private new AlienShipModel _model;
     protected override void CheckEnterCollision(Collider2D collision, IPoolable poolable)
     {
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Bullet))
-        {
-            ObjectPool.ReturnToPool(poolable);
-            ChangePlayerScore(_model.Data.Points);
-        }
         if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Laser))
         {
             ObjectPool.ReturnToPool(poolable);
             ChangePlayerScore(_model.Data.Points);
         }
-    }
-
-    protected override void CheckExitCollision(Collider2D collision, IPoolable poolable)
-    {
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Screen))
+        else if (collision.gameObject.TryGetComponent<BaseView>(out var view))
         {
-            ObjectPool.ReturnToPool(poolable);
+            if (view.Model.Data.Type == ObjectType.Bullet)
+            {
+                ObjectPool.ReturnToPool(poolable);
+                ChangePlayerScore(_model.Data.Points);
+            }
         }
     }
 

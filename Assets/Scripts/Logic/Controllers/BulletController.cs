@@ -1,20 +1,15 @@
 using UnityEngine;
 
-public class BulletController : BaseController<BulletModel>
+public class BulletController : BaseController
 {
     protected override void CheckEnterCollision(Collider2D collision, IPoolable poolable)
     {
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Enemy))
+        if (collision.gameObject.TryGetComponent<BaseView>(out var view))
         {
-            ObjectPool.ReturnToPool(poolable);
-        }
-    }
-
-    protected override void CheckExitCollision(Collider2D collision, IPoolable poolable)
-    {
-        if (Utils.IsInLayerMask(collision.gameObject, ApplicationController.Instance.Masks.Screen))
-        {
-            ObjectPool.ReturnToPool(poolable);
+            if (view.Model.Data.Type == ObjectType.Asteroid || view.Model.Data.Type == ObjectType.AlienShip)
+            {
+                ObjectPool.ReturnToPool(poolable);
+            }
         }
     }
 
